@@ -13,6 +13,29 @@ message GenericCommandResponse {
   bool success = 1;
 }
 
+message MouseMoveCommand {
+  float deltaX = 1;
+  float deltaY = 2;
+}
+
+message MouseClickCommand {
+  bool singleTap = 1;
+}
+
+message MouseEventCommand {
+  enum EventType {
+    SINGLE_TAP = 0;
+    DOUBLE_TAP = 1;
+    LONG_PRESS = 2;
+    SINGLE_TAP_UP = 3;
+    RIGHT_TAP = 4;
+  }
+  EventType eventType = 1;
+}
+
 service CommandService {
   rpc RunCommand (GenericCommand) returns (GenericCommandResponse);
+  rpc MoveMouse(MouseMoveCommand) returns (GenericCommandResponse);
+  rpc ClickMouse(MouseClickCommand) returns (GenericCommandResponse);
+  rpc MouseEvent(MouseEventCommand) returns (GenericCommandResponse);
 }
