@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package book;
+
+option java_package = "me.vinsce.remote.server.proto";
+option java_outer_classname = "CommandProto";
+
+message GenericCommand {
+  string command = 1;
+}
+
+message GenericCommandResponse {
+  bool success = 1;
+}
+
+service CommandService {
+  rpc RunCommand (GenericCommand) returns (GenericCommandResponse);
+}
