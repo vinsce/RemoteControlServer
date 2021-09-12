@@ -56,19 +56,6 @@ protobuf {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url =  uri("https://maven.pkg.github.com/vinsce/RemoteControlServer")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
 task executableJar(type: Jar, group: "build") {
     manifest {
         attributes 'Main-Class': 'me.vinsce.remote.server.Server'
@@ -79,4 +66,22 @@ task executableJar(type: Jar, group: "build") {
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     with jar
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            artifact executableJar
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/vinsce/RemoteControlServer")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
