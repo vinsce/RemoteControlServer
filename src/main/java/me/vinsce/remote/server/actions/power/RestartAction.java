@@ -8,7 +8,12 @@ public class RestartAction extends OSAwareAction<Void> {
     @SneakyThrows
     @Override
     protected Void executeForLinux() {
-        Runtime.getRuntime().exec("shutdown -r now");
+        try {
+            Runtime.getRuntime().exec("systemctl reboot");
+        } catch (Exception e) {
+            // Note: shutdown requires super user
+            Runtime.getRuntime().exec("shutdown -r now");
+        }
         return null;
     }
 
@@ -19,8 +24,10 @@ public class RestartAction extends OSAwareAction<Void> {
         return null;
     }
 
+    @SneakyThrows
     @Override
     protected Void executeForMac() {
-        return executeForLinux();
+        Runtime.getRuntime().exec("shutdown -r now");
+        return null;
     }
 }

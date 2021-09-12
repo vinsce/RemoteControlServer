@@ -8,7 +8,11 @@ public class SleepAction extends OSAwareAction<Void> {
     @SneakyThrows
     @Override
     protected Void executeForLinux() {
-        Runtime.getRuntime().exec("pm-suspend");
+        try {
+            Runtime.getRuntime().exec("systemctl suspend");
+        } catch (Exception e) {
+            Runtime.getRuntime().exec("pm-suspend");
+        }
         return null;
     }
 
