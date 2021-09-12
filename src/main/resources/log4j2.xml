@@ -9,7 +9,7 @@
 		<Root level="warn">
 			<AppenderRef ref="Console"/>
 		</Root>
-		<Logger name="me.vinsce" level="trace" additivity="false">
+		<Logger name="me.vinsce" level="debug" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
 	</Loggers>
