@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/packaging
   pull_request:
 
 jobs:

@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - feature/packaging
     tags:
       - 'v*'
 jobs:
