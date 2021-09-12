@@ -12,6 +12,7 @@ plugins {
     id "io.freefair.lombok" version "6.1.0"
     id 'com.google.protobuf' version "0.8.17"
     id 'maven-publish'
+    id 'application'
 }
 
 group 'me.vinsce'
@@ -54,6 +55,10 @@ protobuf {
             grpc {}
         }
     }
+}
+
+application {
+    mainClass = 'me.vinsce.remote.server.Server'
 }
 
 task executableJar(type: Jar, group: "build") {
