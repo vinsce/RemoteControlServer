@@ -33,9 +33,21 @@ message MouseEventCommand {
   EventType eventType = 1;
 }
 
+message PowerCommand {
+  enum PowerAction {
+    SHUTDOWN = 0;
+    RESTART = 1;
+    SLEEP = 2;
+  }
+  PowerAction action = 1;
+}
+
 service CommandService {
   rpc RunCommand (GenericCommand) returns (GenericCommandResponse);
+
   rpc MoveMouse(MouseMoveCommand) returns (GenericCommandResponse);
   rpc ClickMouse(MouseClickCommand) returns (GenericCommandResponse);
   rpc MouseEvent(MouseEventCommand) returns (GenericCommandResponse);
+
+  rpc RunPowerCommand(PowerCommand) returns (GenericCommandResponse);
 }

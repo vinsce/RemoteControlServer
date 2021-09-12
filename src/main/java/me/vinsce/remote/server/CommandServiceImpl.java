@@ -3,7 +3,11 @@ package me.vinsce.remote.server;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.vinsce.remote.server.actions.power.RestartAction;
+import me.vinsce.remote.server.actions.power.ShutdownAction;
+import me.vinsce.remote.server.actions.power.SleepAction;
 import me.vinsce.remote.server.proto.CommandProto;
+import me.vinsce.remote.server.proto.CommandProto.PowerCommand;
 import me.vinsce.remote.server.proto.CommandServiceGrpc;
 
 import java.awt.*;
@@ -22,13 +26,7 @@ public class CommandServiceImpl extends CommandServiceGrpc.CommandServiceImplBas
     @Override
     public void runCommand(CommandProto.GenericCommand request, StreamObserver<CommandProto.GenericCommandResponse> responseObserver) {
         log.debug("Received request: {}", request.getCommand());
-
-        final var reply = CommandProto.GenericCommandResponse.newBuilder()
-                .setSuccess(true)
-                .build();
-
-        responseObserver.onNext(reply);
-        responseObserver.onCompleted();
+        genericCommandSuccess(responseObserver);
     }
 
 
@@ -39,12 +37,7 @@ public class CommandServiceImpl extends CommandServiceGrpc.CommandServiceImplBas
         final var currentLocation = MouseInfo.getPointerInfo().getLocation();
         robot.mouseMove((int) (currentLocation.getX() + request.getDeltaX()), (int) (currentLocation.getY() + request.getDeltaY()));
 
-        final var reply = CommandProto.GenericCommandResponse.newBuilder()
-                .setSuccess(true)
-                .build();
-
-        responseObserver.onNext(reply);
-        responseObserver.onCompleted();
+        genericCommandSuccess(responseObserver);
     }
 
     @Override
@@ -54,6 +47,8 @@ public class CommandServiceImpl extends CommandServiceGrpc.CommandServiceImplBas
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         if (request.getSingleTap())
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+        genericCommandSuccess(responseObserver);
     }
 
     @Override
@@ -82,5 +77,47 @@ public class CommandServiceImpl extends CommandServiceGrpc.CommandServiceImplBas
                 robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
                 break;
         }
+
+        genericCommandSuccess(responseObserver);
     }
+
+    @SneakyThrows
+    @Override
+    public void runPowerCommand(PowerCommand request, StreamObserver<CommandProto.GenericCommandResponse> responseObserver) {
+        log.debug("Received power action: {}", request.getAction());
+
+        switch (request.getAction()) {
+            case SHUTDOWN:
+                new ShutdownAction().execute();
+                break;
+            case RESTART:
+                new RestartAction().execute();
+                break;
+            case SLEEP:
+                new SleepAction().execute();
+                break;
+            default:
+                genericCommandFailure(responseObserver);
+                return;
+        }
+
+        genericCommandSuccess(responseObserver);
+    }
+
+    private static void genericCommandResponse(StreamObserver<CommandProto.GenericCommandResponse> responseObserver, boolean success) {
+        final var reply = CommandProto.GenericCommandResponse.newBuilder()
+                .setSuccess(success)
+                .build();
+        responseObserver.onNext(reply);
+        responseObserver.onCompleted();
+    }
+
+    private static void genericCommandSuccess(StreamObserver<CommandProto.GenericCommandResponse> responseObserver) {
+        genericCommandResponse(responseObserver, true);
+    }
+
+    private static void genericCommandFailure(StreamObserver<CommandProto.GenericCommandResponse> responseObserver) {
+        genericCommandResponse(responseObserver, false);
+    }
+
 }
