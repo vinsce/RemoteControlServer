@@ -11,6 +11,7 @@ plugins {
     id 'java'
     id "io.freefair.lombok" version "6.1.0"
     id 'com.google.protobuf' version "0.8.17"
+    id 'maven-publish'
 }
 
 group 'me.vinsce.remote.server'
@@ -54,4 +55,28 @@ protobuf {
         }
     }
 }
-// classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.10"
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url =  uri("https://maven.pkg.github.com/vinsce/RemoteControlServer")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+task executableJar(type: Jar, group: "build") {
+    manifest {
+        attributes 'Main-Class': 'me.vinsce.remote.server.Server'
+    }
+    archiveClassifier = ""
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    with jar
+}
