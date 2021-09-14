@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package me.vinsce.remote.media;
+
+import "google/protobuf/empty.proto";
+import "command.proto";
+
+option java_package = "me.vinsce.remote.server.proto";
+option java_outer_classname = "MediaProto";
+
+service MediaService {
+  rpc volumeUp(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc volumeDown(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc mute(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+
+  rpc playPause(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  // rpc play(google.protobuf.Empty) returns (GenericCommandResponse);
+  // rpc pause(google.protobuf.Empty) returns (GenericCommandResponse);
+  rpc stop(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+
+  rpc mediaNext(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc mediaPrev(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+}

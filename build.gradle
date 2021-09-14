@@ -9,10 +9,11 @@ buildscript {
 
 plugins {
     id 'java'
+    id 'idea'
+    id 'application'
     id "io.freefair.lombok" version "6.1.0"
     id 'com.google.protobuf' version "0.8.17"
     id 'maven-publish'
-    id 'application'
 }
 
 group 'me.vinsce'
@@ -54,6 +55,13 @@ protobuf {
         all()*.plugins {
             grpc {}
         }
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file("${projectDir}/build/generated/source/proto/main/java");
+        sourceDirs += file("${projectDir}/build/generated/source/proto/main/grpc");
     }
 }
 
