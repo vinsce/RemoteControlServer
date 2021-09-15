@@ -9,15 +9,15 @@ option java_package = "me.vinsce.remote.server.proto";
 option java_outer_classname = "MediaProto";
 
 service MediaService {
-  rpc volumeUp(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
-  rpc volumeDown(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
-  rpc mute(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc VolumeUp(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc VolumeDown(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc Mute(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
 
-  rpc playPause(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc PlayPause(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
   // rpc play(google.protobuf.Empty) returns (GenericCommandResponse);
   // rpc pause(google.protobuf.Empty) returns (GenericCommandResponse);
-  rpc stop(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc Stop(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
 
-  rpc mediaNext(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
-  rpc mediaPrev(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc MediaNext(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc MediaPrev(google.protobuf.Empty) returns (me.vinsce.remote.GenericCommandResponse);
 }

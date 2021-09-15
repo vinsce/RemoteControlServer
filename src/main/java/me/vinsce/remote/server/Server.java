@@ -24,6 +24,8 @@ public class Server {
     private void start() throws IOException {
         server = ServerBuilder.forPort(SERVER_PORT)
                 .addService(new CommandServiceImpl())
+                .addService(new MouseServiceImpl())
+                .addService(new PowerServiceImpl())
                 .addService(new MediaServiceImpl())
                 .build()
                 .start();
