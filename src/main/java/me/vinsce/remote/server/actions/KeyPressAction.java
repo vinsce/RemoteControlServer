@@ -11,14 +11,16 @@ public class KeyPressAction extends OSAwareAction<Void> {
     private static final String WINDOWS_PS_PRESS_KEY_CMD_FORMAT = "powershell.exe -Command $(New-Object -ComObject WScript.Shell).SendKeys(%s)";
 
     // Requires `xdotool` installed
-    private static final String LINUX_PRESS_KEY_CMD_FORMAT = "";
+    private static final String LINUX_PRESS_KEY_CMD_FORMAT = "xdotool key %s";
     private static final String MAC_PRESS_KEY_CMD_FORMAT = "";
 
     private final Key key;
 
+    @SneakyThrows
     @Override
     protected Void executeForLinux() {
-        return executeForUnknown();
+        Runtime.getRuntime().exec(String.format(LINUX_PRESS_KEY_CMD_FORMAT, key.linuxCode));
+        return null;
     }
 
     @SneakyThrows
@@ -35,13 +37,13 @@ public class KeyPressAction extends OSAwareAction<Void> {
 
     @RequiredArgsConstructor
     public enum Key {
-        VOLUME_UP(null, "[char]0xAF", null),
-        VOLUME_DOWN(null, "[char]0xAE", null),
-        VOLUME_MUTE(null, "[char]0xAD", null),
-        MEDIA_PLAY_PAUSE(null, "[char]0xB3", null),
-        MEDIA_STOP(null, "[char]0xB2", null),
-        MEDIA_NEXT_TRACK(null, "[char]0xB0", null),
-        MEDIA_PREV_TRACK(null, "[char]0xB1", null);
+        VOLUME_UP("XF86AudioRaiseVolume", "[char]0xAF", null),
+        VOLUME_DOWN("XF86AudioLowerVolume", "[char]0xAE", null),
+        VOLUME_MUTE("XF86AudioMute", "[char]0xAD", null),
+        MEDIA_PLAY_PAUSE("XF86AudioPlay", "[char]0xB3", null),
+        MEDIA_STOP("XF86AudioStop", "[char]0xB2", null),
+        MEDIA_NEXT_TRACK("XF86AudioNext", "[char]0xB0", null),
+        MEDIA_PREV_TRACK("XF86AudioPrev", "[char]0xB1", null);
 
         private final String linuxCode;
         private final String windowsCode;
