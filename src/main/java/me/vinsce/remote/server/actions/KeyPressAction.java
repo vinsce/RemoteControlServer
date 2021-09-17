@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KeyPressAction extends OSAwareAction<Void> {
 
-    private static final String WINDOWS_PS_PRESS_KEY_CMD_FORMAT = "powershell.exe -Command $(New-Object -ComObject WScript.Shell).SendKeys(%s)";
+    private static final String WINDOWS_PS_PRESS_KEY_CMD_FORMAT = "powershell.exe -Command $(New-Object -ComObject WScript.Shell).SendKeys([char]%s)";
 
     // Requires `xdotool` installed
     private static final String LINUX_PRESS_KEY_CMD_FORMAT = "xdotool key %s";
@@ -35,15 +35,21 @@ public class KeyPressAction extends OSAwareAction<Void> {
         return executeForUnknown();
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s [%s]", getClass().getSimpleName(), key);
+    }
+
     @RequiredArgsConstructor
     public enum Key {
-        VOLUME_UP("XF86AudioRaiseVolume", "[char]0xAF", null),
-        VOLUME_DOWN("XF86AudioLowerVolume", "[char]0xAE", null),
-        VOLUME_MUTE("XF86AudioMute", "[char]0xAD", null),
-        MEDIA_PLAY_PAUSE("XF86AudioPlay", "[char]0xB3", null),
-        MEDIA_STOP("XF86AudioStop", "[char]0xB2", null),
-        MEDIA_NEXT_TRACK("XF86AudioNext", "[char]0xB0", null),
-        MEDIA_PREV_TRACK("XF86AudioPrev", "[char]0xB1", null);
+        // Windows reference: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+        VOLUME_UP("XF86AudioRaiseVolume", "0xAF", null),
+        VOLUME_DOWN("XF86AudioLowerVolume", "0xAE", null),
+        VOLUME_MUTE("XF86AudioMute", "0xAD", null),
+        MEDIA_PLAY_PAUSE("XF86AudioPlay", "0xB3", null),
+        MEDIA_STOP("XF86AudioStop", "0xB2", null),
+        MEDIA_NEXT_TRACK("XF86AudioNext", "0xB0", null),
+        MEDIA_PREV_TRACK("XF86AudioPrev", "0xB1", null);
 
         private final String linuxCode;
         private final String windowsCode;
