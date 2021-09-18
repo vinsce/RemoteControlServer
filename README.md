@@ -8,6 +8,7 @@ Desktop Remote Control gRPC server for [Wear Remote](https://github.com/vinsce/W
 
 - Remote touchpad
 - Remote power actions (shutdown, reboot, sleep)
+- Remote media control (volume, playback)
 
 ## Usage
 

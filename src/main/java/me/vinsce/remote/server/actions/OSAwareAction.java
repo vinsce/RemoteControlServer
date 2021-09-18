@@ -12,7 +12,7 @@ public abstract class OSAwareAction<R> implements Action<R> {
 
     @Override
     public final R execute() {
-        log.debug("Executing {} for OS '{}'", getClass().getSimpleName(), os);
+        log.debug("Executing {} for OS '{}'", this, os);
         switch (os) {
             case LINUX:
                 return executeForLinux();
@@ -46,6 +46,11 @@ public abstract class OSAwareAction<R> implements Action<R> {
         }
 
         return OSFamily.UNKNOWN;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
     }
 
     @RequiredArgsConstructor

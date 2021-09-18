@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package me.vinsce.remote.mouse;
+
+import "command.proto";
+
+option java_package = "me.vinsce.remote.server.proto";
+option java_outer_classname = "MouseProto";
+
+message MouseMoveRequest {
+  float deltaX = 1;
+  float deltaY = 2;
+}
+
+message MouseEventRequest {
+  enum EventType {
+    SINGLE_TAP = 0;
+    DOUBLE_TAP = 1;
+    LONG_PRESS = 2;
+    SINGLE_TAP_UP = 3;
+    RIGHT_TAP = 4;
+  }
+  EventType eventType = 1;
+}
+
+service MouseService {
+  rpc MoveMouse(MouseMoveRequest) returns (me.vinsce.remote.GenericCommandResponse);
+  rpc MouseEvent(MouseEventRequest) returns (me.vinsce.remote.GenericCommandResponse);
+}

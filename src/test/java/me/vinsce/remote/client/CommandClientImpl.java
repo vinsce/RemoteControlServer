@@ -26,10 +26,10 @@ public class CommandClientImpl {
 
     public void sendMessage(String message) {
         log.info("Will try to send message {}...", message);
-        var command = CommandProto.GenericCommand.newBuilder().setCommand(message).build();
+        var command = CommandProto.GenericCommandRequest.newBuilder().setCommand(message).build();
         CommandProto.GenericCommandResponse response;
         try {
-            response = blockingStub.runCommand(command);
+            response = blockingStub.command(command);
         } catch (StatusRuntimeException e) {
             log.warn("RPC failed: {}", e.getStatus());
             return;
